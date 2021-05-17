@@ -1,0 +1,51 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "cppbuild",
+			"label": "C/C++: g++.exe 生成活动文件",
+			"command": "C:\\MinGW-w64\\bin\\g++.exe",
+			"args": [
+				"-g",
+				"${file}",
+				"-o",
+				"${workspaceFolder}\\bin\\${fileBasenameNoExtension}.exe",
+				"-I",
+				"${workspaceFolder}\\include",
+				"-I",
+				"${workspaceFolder}\\include\\Eigen",
+				"-I",
+				"${workspaceFolder}\\include\\OpenCV",
+				"-L",
+				"${workspaceFolder}\\bin",
+				"-l","libPocoFoundation",
+				"-l","libPocoNet",
+                "-l","libopencv_calib3d411",
+                "-l","libopencv_core411",
+                "-l","libopencv_dnn411",
+                "-l","libopencv_features2d411",
+                "-l","libopencv_flann411",
+                "-l","libopencv_highgui411",
+                "-l","libopencv_imgcodecs411",
+                "-l","libopencv_imgproc411",
+                "-l","libopencv_ml411",
+                "-l","libopencv_objdetect411",
+                "-l","libopencv_photo411",
+                "-l","libopencv_stitching411",
+                "-l","libopencv_video411",
+                "-l","libopencv_videoio411",
+				"-L",
+				"${workspaceFolder}\\lib",
+				"-l","ws2_32",
+			],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "build",
+			"detail": "编译器: C:\\MinGW-w64\\bin\\g++.exe"
+		}
+	]
+}

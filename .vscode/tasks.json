@@ -7,6 +7,8 @@
 			"command": "C:\\MinGW-w64\\bin\\g++.exe",
 			"args": [
 				"-g",
+				"${workspaceFolder}\\src\\brick.cpp",
+				"${workspaceFolder}\\src\\geometric-median.cpp",
 				"${file}",
 				"-o",
 				"${workspaceFolder}\\bin\\${fileBasenameNoExtension}.exe",
@@ -17,7 +19,8 @@
 				"-I",
 				"${workspaceFolder}\\include\\OpenCV",
 				"-L",
-				"${workspaceFolder}\\bin",
+				"${workspaceFolder}\\lib",
+				"-l","ws2_32",
 				"-l","libPocoFoundation",
 				"-l","libPocoNet",
                 "-l","libopencv_calib3d411",
@@ -34,9 +37,6 @@
                 "-l","libopencv_stitching411",
                 "-l","libopencv_video411",
                 "-l","libopencv_videoio411",
-				"-L",
-				"${workspaceFolder}\\lib",
-				"-l","ws2_32",
 			],
 			"options": {
 				"cwd": "${workspaceFolder}"

@@ -11,18 +11,25 @@ using namespace Eigen;
 class Brick
 {
 private:
-    const double length_world_frame_ = 10;
-    const double width_world_frame_ = 10;
-    const double height_world_frame_ = 10;
-    int index;
-    Vector2d center_camera_frame_;
-    double angle_camera_frame_;
+    double length_world;
+    double width_world;
+    double height_world;
+    Vector2d center_camera_;
+    double angle_camera_;
+    int index_;
+    double dist_camera_;
 
 public:
     Brick(const Vector2d &center, const double &angle);
     ~Brick();
+    Vector2d CenterCamera();
+    double AngleCamera();
     void Print();
     bool WriteToFile();
+    void WriteDistCamera(double dist_camera);
+    double DistCamera();
+    void WriteIndex(int index);
+    int Index();
 };
 
 #endif

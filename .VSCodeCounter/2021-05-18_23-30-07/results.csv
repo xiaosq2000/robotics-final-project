@@ -1,8 +1,0 @@
-"filename", "language", "C++", "comment", "blank", "total"
-"c:\toy-projects\robotics-final-project\robotics-final-project\src\brick.cpp", "C++", 20, 0, 4, 24
-"c:\toy-projects\robotics-final-project\robotics-final-project\src\communication.cpp", "C++", 67, 21, 7, 95
-"c:\toy-projects\robotics-final-project\robotics-final-project\src\eye-in-hand-calibration.cpp", "C++", 305, 35, 27, 367
-"c:\toy-projects\robotics-final-project\robotics-final-project\src\geometric-median.cpp", "C++", 85, 48, 16, 149
-"c:\toy-projects\robotics-final-project\robotics-final-project\src\rectangle-detection.cpp", "C++", 281, 67, 51, 399
-"c:\toy-projects\robotics-final-project\robotics-final-project\src\test.cpp", "C++", 63, 12, 9, 84
-"Total", "-", 821, 183, 114, 1118

@@ -9,8 +9,8 @@
 using namespace std;
 using namespace Eigen;
 
-double distSum(Vector2d p, const vector<Vector2d> &points);
-bool forbiddenZoneCheck(const Vector2d p, const vector<Vector2d> &points, const double &forbidden_zone_radius);
-void geometricMedian(const vector<Vector2d> &points, Vector2d &center, double &min_dist, const double &lower_limit, const double &forbidden_zone_radius);
+double DistSum(Vector2d p, const vector<Vector2d> &points);
+bool ForbiddenZoneCheck(const Vector2d p, const vector<Vector2d> &points, const double &forbidden_zone_radius);
+void GeometricMedian(const vector<Vector2d> &points, Vector2d &center, double &min_dist, const double &lower_limit, const double &forbidden_zone_radius);
 
 #endif

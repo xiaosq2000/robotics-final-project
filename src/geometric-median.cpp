@@ -8,6 +8,7 @@
  */
 
 #include "geometric-median.h"
+#include "brick.h"
 
 /**
  * @brief Calculate the sum of Euclidean distances between a point and a set of points. 
@@ -16,7 +17,7 @@
  * @param points - a set of points 
  * @return double - the sum of Euclidean distances
  */
-double distSum(Vector2d p, const vector<Vector2d> &points)
+double DistSum(Vector2d p, const vector<Vector2d> &points)
 {
     double sum = 0;
     vector<Vector2d>::const_iterator it;
@@ -24,7 +25,6 @@ double distSum(Vector2d p, const vector<Vector2d> &points)
     {
         sum += (p - *it).norm();
     }
-    // Return
     return sum;
 }
 
@@ -37,7 +37,7 @@ double distSum(Vector2d p, const vector<Vector2d> &points)
  * @return true - NOT too close
  * @return false - too close
  */
-bool forbiddenZoneCheck(const Vector2d p, const vector<Vector2d> &points, const double &forbidden_zone_radius)
+bool ForbiddenZoneCheck(const Vector2d p, const vector<Vector2d> &points, const double &forbidden_zone_radius)
 {
     bool flag = 1;
     vector<Vector2d>::const_iterator it;
@@ -60,7 +60,7 @@ bool forbiddenZoneCheck(const Vector2d p, const vector<Vector2d> &points, const 
  * @param lower_limit - this value affects accuracy, and 0.01 is recommended.
  * @param forbidden_zone_radius - this value helps to exclude candidate center points that are too close to some points in the set.
  */
-void geometricMedian(const vector<Vector2d> &points, Vector2d &center, double &min_dist, const double &lower_limit, const double &forbidden_zone_radius)
+void GeometricMedian(const vector<Vector2d> &points, Vector2d &center, double &min_dist, const double &lower_limit, const double &forbidden_zone_radius)
 {
     // Choose the center of gravity of equal discrete mass distribution as the initial point.
     Vector2d current_point;
@@ -70,11 +70,11 @@ void geometricMedian(const vector<Vector2d> &points, Vector2d &center, double &m
         current_point += *it;
     }
     current_point /= points.size();
-    while (!forbiddenZoneCheck(current_point, points, forbidden_zone_radius))
+    while (!ForbiddenZoneCheck(current_point, points, forbidden_zone_radius))
     {
         current_point = 2 * current_point + Vector2d(1, 1);
     }
-    min_dist = distSum(current_point, points);
+    min_dist = DistSum(current_point, points);
 
     // Assume test_distance to be 1000
     double test_distance = 1000;
@@ -92,9 +92,9 @@ void geometricMedian(const vector<Vector2d> &points, Vector2d &center, double &m
             new_point = current_point + (double)test_distance * directions[i];
             new_point = current_point + (double)test_distance * directions[i];
 
-            double new_dist = distSum(new_point, points);
+            double new_dist = DistSum(new_point, points);
 
-            if (new_dist < min_dist && forbiddenZoneCheck(new_point, points, forbidden_zone_radius))
+            if (new_dist < min_dist && ForbiddenZoneCheck(new_point, points, forbidden_zone_radius))
             {
                 min_dist = new_dist;
                 current_point = new_point;
@@ -111,35 +111,3 @@ void geometricMedian(const vector<Vector2d> &points, Vector2d &center, double &m
     }
     center = current_point;
 }
-
-/**
- * @brief The entry of the test application for getting geometric median.
- * 
- * 
- */
-
-// int main()
-// {
-//     vector<Vector2d> points;
-//     Vector2d center;
-//     double min_dist;
-//     double forbidden_zone_radius = 2.0;
-
-//     // Test 1
-//     // points.push_back(Vector2d(-5.0, 0.0));
-//     // points.push_back(Vector2d(5.0, 0.0));
-//     // points.push_back(Vector2d(0.0, -5.0);
-//     // points.push_back(Vector2d(0.0, 5.0));
-
-//     // Test 2
-//     points.push_back(Vector2d(-1.5, 0.0));
-//     points.push_back(Vector2d(1.5, 0.0));
-//     points.push_back(Vector2d(0.0, -1.5));
-//     points.push_back(Vector2d(0.0, 1.5));
-
-//     geometricMedian(points, center, min_dist, 0.01, forbidden_zone_radius);
-
-//     cout << "coordinates of the geometric median point: " << endl;
-//     cout << center << endl;
-//     cout << "total distance: " << min_dist << endl;
-// }

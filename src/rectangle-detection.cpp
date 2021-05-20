@@ -1,5 +1,11 @@
 #include "rectangle-detection.h"
 
+/**
+ * @brief HSV color segmentation, red is preserved
+ * 
+ * @param src 
+ * @param dst 
+ */
 void HsvRedColorSeg(const Mat &src, Mat &dst)
 {
     int h_min_1 = 0;
@@ -21,7 +27,7 @@ void HsvRedColorSeg(const Mat &src, Mat &dst)
 }
 
 /**
- * @brief 
+ * @brief Rectangles detection by 'cv::minAreaRect()' method
  * 
  * @param src - the preprocessed image, src.type() == 0
  * @param dst - the image to display
@@ -35,7 +41,7 @@ void RectDetection(Mat &src, Mat &dst, vector<Brick> &bricks, double &diagonal_l
     findContours(src, contours, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE);
     vector<RotatedRect> rect(contours.size());
     Point2f vertices[4];
-    
+
     for (size_t i = 0; i < contours.size(); i++)
     {
         rect[i] = minAreaRect(contours[i]);

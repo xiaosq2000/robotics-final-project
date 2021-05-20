@@ -35,6 +35,7 @@ int main(int argc, char **argv)
     construction.FindBestLocationCamera();
     construction.Label(false);
     construction.Display(img_dst);
+    construction.WriteToFile();
 
     imwrite(kFileDirPath + "img_dst.jpg", img_dst);
     system("pause");

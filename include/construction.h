@@ -2,6 +2,7 @@
 #define _CONSTRUCTION_H_
 
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <vector>
 #include <algorithm>
@@ -28,7 +29,7 @@ public:
     void FindBestLocationCamera();
     void Label(bool flag);
     void Display(Mat &img_dst);
-    // Vector2d BestLocationCamera();
+    void WriteToFile();
 };
 
 #endif

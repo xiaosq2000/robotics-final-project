@@ -1,0 +1,7 @@
+number of bricks: 8
+average diagonal length(pixel): 164.701
+the best location to build blocks(pixel): 
+642.046
+ 563.51
+total distance(pixel): 
+2314.84

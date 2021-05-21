@@ -11,6 +11,7 @@
 				"${workspaceFolder}\\src\\construction.cpp",
 				"${workspaceFolder}\\src\\geometric-median.cpp",
 				"${workspaceFolder}\\src\\rectangle-detection.cpp",
+				"${workspaceFolder}\\src\\HLrobotconfig.cpp",
 				"${file}",
 				"-o",
 				"${workspaceFolder}\\bin\\${fileBasenameNoExtension}.exe",

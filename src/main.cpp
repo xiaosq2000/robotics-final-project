@@ -2,6 +2,7 @@
 #include "brick.h"
 #include "construction.h"
 #include "rectangle-detection.h"
+#include "HLrobotconfig.h"
 
 using namespace std;
 using namespace cv;
@@ -18,6 +19,16 @@ const string kFileDirPath = "C:/toy-projects/robotics-final-project/robotics-fin
  */
 int main(int argc, char **argv)
 {
+
+    double joint[6] {0};
+    HLRobot::SetRobotEndPos(495, -144, 530, -155, 178, -17);
+    HLRobot::GetJointAngles(joint[0], joint[1], joint[2], joint[3], joint[4], joint[5]);
+    for (size_t i = 0; i < 6; i++)
+    {
+        cout << joint[i] << ", " ;
+    }
+    cout << endl;
+    
 
     Mat img_src = imread(kFileDirPath + "test.jpg");
     Mat img_hsv = Mat::zeros(img_src.size(), img_src.type());

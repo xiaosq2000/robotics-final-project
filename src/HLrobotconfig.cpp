@@ -45,7 +45,7 @@ namespace HLRobot
 			cout << "No solution for subproblem1! Because w'u /= w'v or ||u'||/=||v'||" << endl;
 			cout << "w'u=" << w.dot(u) << "\t" << "w'v=" << w.dot(v) << endl;
 			cout << "||u'||=" << up.norm() << "\t||v'||=" << vp.norm() << endl;
-			theta = NULL;
+			theta = 0;
 			return;
 		}
 		if (up.norm() > 1e-6)
@@ -55,7 +55,7 @@ namespace HLRobot
 		else
 		{
 			cout << "No solution for subproblem1! Because ||u'||=0" << endl;
-			theta = NULL;
+			theta = 0;
 		}
 	}
 
@@ -66,7 +66,7 @@ namespace HLRobot
 		{
 			cout << "No solution for subproblem2! Because ||u||/=||v||" << endl;
 			cout << "||u||=" << u.norm() << "\t||v||=" << v.norm() << endl;
-			theta1 = theta2 - NULL;
+			theta1 = theta2;
 			return;
 		}
 		double alpha = ((w1.dot(w2)) * w2.dot(u) - w1.dot(v)) / (pow(w1.dot(w2), 2) - 1);
@@ -88,7 +88,7 @@ namespace HLRobot
 			cout << "No solution for subproblem1! Because w' /= tw'v or ||u'||/=||v'||" << endl;
 			cout << "w'u=" << w.dot(u) << "\t" << "w'v=" << w.dot(v) << endl;
 			cout << "||u'||=" << up.norm() << "\t||v'||=" << vp.norm() << endl;
-			theta = NULL;
+			theta = 0;
 			return;
 		}
 		double theta0 = atan2(w.dot(up.cross(vp)), up.dot(vp));

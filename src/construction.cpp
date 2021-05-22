@@ -1,6 +1,6 @@
 #include "construction.h"
 
-const string kFileDirPath = "C:/toy-projects/robotics-final-project/robotics-final-project/data/rectangle-detection/";
+const string kFileDirPath = "C:/toy-projects/robotics-final-project/robotics-final-project/data";
 
 /**
  * @brief Construct a new Construction:: Construction object
@@ -90,6 +90,63 @@ void Construction::Label(bool flag)
 bool GreaterSort(Brick a, Brick b) { return (a.DistCamera() > b.DistCamera()); }
 bool LessSort(Brick a, Brick b) { return (a.DistCamera() < b.DistCamera()); }
 
+
+void Construction::MotionPlan(const string &bricks_configuration_type, const string &trajectory_type, const string &path_type, const double &vel, const double& acc, const double &dec)
+{
+    // if (bricks_configuration_type == "base" && trajectory_type == "trapezoid" && trajectory_type == "line")
+    // {
+        // planning pose at destination for each brick
+        double x, y, z, yaw, pitch, roll;
+        CHLMotionPlan motion_plan = CHLMotionPlan();
+        for (size_t i = 0; i < this->bricks_.size(); i++)
+        {
+            // according to `bricks_configuration_type`, the following three variables are relatively fixed.
+            z = this->pose_base_.z + i * this->kBrickHeight_;
+            pitch = this->pose_base_.pitch;
+            roll = this->pose_base_.roll;
+
+            switch ((i + 1) % 4)
+            {
+            case 1:
+                x = this->pose_base_.x - 0.5 * this->kBrickLength_;
+                y = this->pose_base_.y;
+                yaw = this->pose_base_.yaw;
+                this->bricks_[i].WritePoseDestination(x, y, z, yaw, pitch, roll);
+                break;
+            case 2:
+                x = this->pose_base_.x + 0.5 * this->kBrickLength_;
+                y = this->pose_base_.y;
+                yaw = this->pose_base_.yaw;
+                this->bricks_[i].WritePoseDestination(x, y, z, yaw, pitch, roll);
+                break;
+            case 3:
+                x = this->pose_base_.x;
+                y = this->pose_base_.y - 0.5 * this->kBrickLength_;
+                yaw = this->pose_base_.yaw + 0.5 * PI;
+                this->bricks_[i].WritePoseDestination(x, y, z, yaw, pitch, roll);
+                break;
+            case 4:
+                x = this->pose_base_.x;
+                y = this->pose_base_.y + 0.5 * this->kBrickLength_;
+                yaw = this->pose_base_.yaw + 0.5 * PI;
+                this->bricks_[i].WritePoseDestination(x, y, z, yaw, pitch, roll);
+                break;
+            default:
+                break;
+            }
+            motion_plan.SetSampleTime(0.001);
+            motion_plan.SetPlanPoints(this->bricks_[i].PoseOrigin(), this->bricks_[i].PoseDestination());
+            motion_plan.SetProfile(vel, acc, dec);
+            motion_plan.GetPlanPoints(kFileDirPath + "/motion-plan/data_" + to_string(i+1) + ".txt");
+            motion_plan.GetPlanPoints_line(kFileDirPath + "/motion-plan/data_line_" + to_string(i+1));
+        }
+    // }
+    // else
+    // {
+    //     cout << "Only 'base', 'trapezoid', 'line' motion planning is supported now." << endl;
+    // }
+}
+
 /**
  * @brief 
  * 
@@ -99,23 +156,23 @@ bool LessSort(Brick a, Brick b) { return (a.DistCamera() < b.DistCamera()); }
 void Construction::WriteToFile()
 {
     ofstream bricks_file;
-    bricks_file.open(kFileDirPath + "bricks.txt", ios::out);
+    bricks_file.open(kFileDirPath + "/rectangle-detection/bricks.txt", ios::out);
     for (size_t i = 0; i < this->bricks_.size(); i++)
     {
-        bricks_file << this->bricks_[i].Index()+1 << endl;
+        bricks_file << this->bricks_[i].Index() + 1 << endl;
         bricks_file << this->bricks_[i].CenterCamera() << endl;
         bricks_file << this->bricks_[i].AngleCamera() << endl;
     }
     bricks_file.close();
 
     ofstream construction_file;
-    construction_file.open(kFileDirPath + "construction.txt", ios::out);
+    construction_file.open(kFileDirPath + "/rectangle-detection/construction.txt", ios::out);
     construction_file << "number of bricks: " << this->bricks_.size() << endl;
     construction_file << "average diagonal length(pixel): " << this->diagonal_length_camera_ << endl;
     construction_file << "the best location to build blocks(pixel): " << endl
-                << this->best_location_camera_ << endl
-                << "total distance(pixel): " << endl
-                << this->min_dist_camera_ << endl;
+                      << this->best_location_camera_ << endl
+                      << "total distance(pixel): " << endl
+                      << this->min_dist_camera_ << endl;
     construction_file.close();
 }
 

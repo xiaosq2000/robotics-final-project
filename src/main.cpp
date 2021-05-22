@@ -8,7 +8,7 @@ using namespace std;
 using namespace cv;
 using namespace Eigen;
 
-const string kFileDirPath = "C:/toy-projects/robotics-final-project/robotics-final-project/data/rectangle-detection/";
+const string kFileDirPath = "C:/toy-projects/robotics-final-project/robotics-final-project/data";
 
 /**
  * @brief The entry of the test application.
@@ -20,17 +20,16 @@ const string kFileDirPath = "C:/toy-projects/robotics-final-project/robotics-fin
 int main(int argc, char **argv)
 {
 
-    double joint[6] {0};
-    HLRobot::SetRobotEndPos(495, -144, 530, -155, 178, -17);
-    HLRobot::GetJointAngles(joint[0], joint[1], joint[2], joint[3], joint[4], joint[5]);
-    for (size_t i = 0; i < 6; i++)
-    {
-        cout << joint[i] << ", " ;
-    }
-    cout << endl;
-    
+    // double joint[6] {0};
+    // HLRobot::SetRobotEndPos(495, -144, 530, -155, 178, -17);
+    // HLRobot::GetJointAngles(joint[0], joint[1], joint[2], joint[3], joint[4], joint[5]);
+    // for (size_t i = 0; i < 6; i++)
+    // {
+    //     cout << joint[i] << ", " ;
+    // }
+    // cout << endl;
 
-    Mat img_src = imread(kFileDirPath + "test.jpg");
+    Mat img_src = imread(kFileDirPath + "/rectangle-detection/img_src.jpg");
     Mat img_hsv = Mat::zeros(img_src.size(), img_src.type());
     Mat img_hsv_seg = Mat::zeros(img_src.size(), img_src.type());
     Mat img_dst = Mat::zeros(img_src.size(), img_src.type());
@@ -47,7 +46,9 @@ int main(int argc, char **argv)
     construction.Label(false);
     construction.Display(img_dst);
     construction.WriteToFile();
+    construction.MotionPlan();
 
-    imwrite(kFileDirPath + "img_dst.jpg", img_dst);
+    imwrite(kFileDirPath + "/rectangle-detection/img_dst.jpg", img_dst);
     system("pause");
+
 }

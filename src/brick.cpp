@@ -17,6 +17,15 @@ Brick::Brick(const Vector2d &center, const double &angle)
 }
 
 /**
+ * @brief Destroy the Brick:: Brick object
+ * 
+ */
+Brick::~Brick()
+{
+    // cout << "A Brick object is deleted." << endl;
+}
+
+/**
  * @brief Get the center point pixel (Vector2d)
  * 
  * @return Vector2d 
@@ -34,14 +43,6 @@ Vector2d Brick::CenterCamera()
 double Brick::AngleCamera()
 {
     return this->angle_camera_;
-}
-
-void Brick::Print()
-{
-    cout << "center(pixel): " << endl
-         << this->center_camera_ << endl
-         << "angle: " << endl
-         << this->angle_camera_ << endl;
 }
 
 void Brick::WriteDistCamera(double dist_camera)
@@ -64,11 +65,40 @@ int Brick::Index()
     return this->index_;
 }
 
-/**
- * @brief Destroy the Brick:: Brick object
- * 
- */
-Brick::~Brick()
+void Brick::WritePoseDestination(double x, double y, double z, double yaw, double pitch, double roll)
 {
-    // cout << "A Brick object is deleted." << endl;
+    this->pose_destination_.x = x;
+    this->pose_destination_.y = y;
+    this->pose_destination_.z = z;
+    this->pose_destination_.yaw = yaw;
+    this->pose_destination_.pitch = pitch;
+    this->pose_destination_.roll = roll;
+}
+
+struct PosStruct Brick::PoseDestination()
+{
+    return this->pose_destination_;
+}
+
+void Brick::WritePoseOrigin(double x, double y, double z, double yaw, double pitch, double roll)
+{
+    this->pose_origin_.x = x;
+    this->pose_origin_.y = y;
+    this->pose_origin_.z = z;
+    this->pose_origin_.yaw = yaw;
+    this->pose_origin_.pitch = pitch;
+    this->pose_origin_.roll = roll;
+}
+
+struct PosStruct Brick::PoseOrigin()
+{
+    return this->pose_origin_;
+}
+
+void Brick::Print()
+{
+    cout << "center(pixel): " << endl
+         << this->center_camera_ << endl
+         << "angle: " << endl
+         << this->angle_camera_ << endl;
 }

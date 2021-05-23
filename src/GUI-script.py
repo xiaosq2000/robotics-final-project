@@ -76,7 +76,7 @@ class Application(tk.Frame):
         # self.y = self.data[:, 1]
         # self.z = self.data[:, 2]
         # self.ax.plot(self.x, self.y, self.z)
-        self.x = np.arange(0,3,.01)
+        self.x = np.arange(0, 3, .01)
         # self.ax.plot(self.x, self.y, self.z)
 
         self.ax.plot(self.x, 2 * np.sin(2 * np.pi * self.x))

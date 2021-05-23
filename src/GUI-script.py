@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import font
 from PIL import ImageTk, Image
 import numpy as np
 from mpl_toolkits.mplot3d import Axes3D
@@ -14,24 +15,28 @@ class Application(tk.Frame):
         self.master = master
         self.pack()
         self.create_widgets()
-
     def create_widgets(self):
+        self.my_font = tk.font.Font(family='仓耳今楷05-6763 W03', size=15)
+
         self.disp_img_src_button = tk.Button(self)
         self.disp_img_src_button["text"] = "采集图像"
         self.disp_img_src_button["command"] = self.disp_img_src
+        self.disp_img_src_button["font"] = self.my_font
         self.disp_img_src_button.pack(side="left")
 
         self.disp_img_dst_button = tk.Button(self)
-        self.disp_img_dst_button["text"] = "物体识别与最优中心计算"
+        self.disp_img_dst_button["text"] = "物体识别与最优策略"
         self.disp_img_dst_button["command"] = self.disp_img_dst
+        self.disp_img_dst_button["font"] = self.my_font
         self.disp_img_dst_button.pack(side="left")
 
         self.disp_motion_plan_button = tk.Button(self)
-        self.disp_motion_plan_button["text"] = "运动规划可视化"
+        self.disp_motion_plan_button["text"] = "运动规划"
         self.disp_motion_plan_button["command"] = self.disp_motion_plan
+        self.disp_motion_plan_button["font"] = self.my_font
         self.disp_motion_plan_button.pack(side="left")
 
-        self.quit = tk.Button(self, text="退出", fg="red",
+        self.quit = tk.Button(self, text="退出", fg="red", font=self.my_font,
                               command=self.master.destroy)
         self.quit.pack(side="left")
 
@@ -88,7 +93,7 @@ class Application(tk.Frame):
 
 root = tk.Tk()
 root.title("test")
-root.geometry("1600x1200")
+root.geometry("1366x768")
 root.configure(background='white')
 
 app = Application(master=root)

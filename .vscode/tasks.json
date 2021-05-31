@@ -8,6 +8,8 @@
 			"args": [
 				"-g",
 				"-std=c++17",
+				"${workspaceFolder}\\src\\rigid-body-transformation.cpp",
+				"${workspaceFolder}\\src\\motion-plan.cpp",
 				// "${workspaceFolder}\\src\\brick.cpp",
 				// "${workspaceFolder}\\src\\construction.cpp",
 				// "${workspaceFolder}\\src\\geometric-median.cpp",

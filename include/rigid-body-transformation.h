@@ -37,7 +37,11 @@ private:
     Vector3d q_[6];
 
 public:
-    RigidBodyTransformation(const std::string &path, const double &l1, const double &l2, const double &l3, const double &l4);
+    RigidBodyTransformation(const std::string &cam_param_path = "../share/eye-in-hand-calibration/dst",
+                            const double &l1 = 0.491,
+                            const double &l2 = 0.45,
+                            const double &l3 = 0.45,
+                            const double &l4 = 0.084);
     ~RigidBodyTransformation();
 
     void InverseKinematics(const double *g_vec, double *joint_coor, bool *config);

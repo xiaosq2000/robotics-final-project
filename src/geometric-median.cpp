@@ -1,3 +1,4 @@
+
 /**
  * @file geometric_median.cpp
  * @author 肖书奇
@@ -7,8 +8,12 @@
  * 
  */
 
+#include <iostream>
+#include <Eigen/Dense>
 #include "geometric-median.h"
-#include "brick.h"
+
+using namespace std;
+using namespace Eigen;
 
 /**
  * @brief Calculate the sum of Euclidean distances between a point and a set of points. 
@@ -54,13 +59,13 @@ bool ForbiddenZoneCheck(const Vector2d p, const vector<Vector2d> &points, const 
 /**
  * @brief Get the geometric median of a set of 2D points
  * 
- * @param points - the point set as input.
- * @param center - the geometric median as output.
- * @param min_dist - the sum of Euclidean distances between a certain point and a set of points as output. 
- * @param lower_limit - this value affects accuracy, and 0.01 is recommended.
- * @param forbidden_zone_radius - this value helps to exclude candidate center points that are too close to some points in the set.
+ * @param points - the point set as input
+ * @param center - the geometric median as output
+ * @param min_dist - the sum of Euclidean distances between a certain point and a set of points as output
+ * @param forbidden_zone_radius - this value helps to exclude candidate center points that are too close to some points in the set
+ * @param lower_limit - this value affects accuracy, 0.001 by default
  */
-void GeometricMedian(const vector<Vector2d> &points, Vector2d &center, double &min_dist, const double &lower_limit, const double &forbidden_zone_radius)
+void GeometricMedian(const vector<Vector2d> &points, Vector2d &center, double &min_dist,  const double &forbidden_zone_radius, const double &lower_limit)
 {
     // Choose the center of gravity of equal discrete mass distribution as the initial point.
     Vector2d current_point;

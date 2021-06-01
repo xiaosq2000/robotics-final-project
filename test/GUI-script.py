@@ -1,3 +1,4 @@
+
 import os
 import time
 import tkinter as tk
@@ -8,6 +9,9 @@ from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.backends.backend_tkagg import (
     FigureCanvasTkAgg, NavigationToolbar2Tk)
 from matplotlib.figure import Figure
+
+# Set cuurent working directory
+os.chdir("C:/toy-projects/robotics-final-project/robotics-final-project/bin")
 
 
 class Application(tk.Frame):
@@ -72,7 +76,7 @@ class Application(tk.Frame):
         self.canvas.get_tk_widget().destroy()
         self.toolbar.destroy()
 
-        self.img_src_path = "../share/rectangle-detection/src/img_src.jpg"
+        self.img_src_path = "../share/target-recognition/src/img_src.jpg"
         self.img_src = ImageTk.PhotoImage(Image.open(self.img_src_path))
         self.panel = tk.Label(self.master, image=self.img_src)
         self.panel.pack(side="bottom", fill="both", expand="yes")
@@ -91,10 +95,11 @@ class Application(tk.Frame):
         self.canvas.get_tk_widget().destroy()
         self.toolbar.destroy()
 
-        action_path = "target-recognition.exe"
+        action_path = "brick-construction.exe"
         os.startfile(action_path)
         time.sleep(0.5)
-        self.img_dst_path = "../share/rectangle-detection/dst/img_dst.jpg"
+
+        self.img_dst_path = "../share/target-recognition/dst/img_rectangle_detection.jpg"
         self.img_dst = ImageTk.PhotoImage(Image.open(self.img_dst_path))
         self.panel = tk.Label(self.master, image=self.img_dst)
         self.panel.pack(side="bottom", fill="both", expand="yes")
@@ -103,11 +108,7 @@ class Application(tk.Frame):
         self.panel.destroy()
         self.canvas.get_tk_widget().destroy()
         self.toolbar.destroy()
-
-        # action_path = r"C:/toy-projects/robotics-final-project/robotics-final-project/bin/target-recognition.exe"
-        # os.startfile(action_path)
-        # time.sleep(0.5)
-        self.img_dst_path = "../share/rectangle-detection/img_dst.jpg"
+        self.img_dst_path = "../share/target-recognition/dst/img_strategy.jpg"
         self.img_dst = ImageTk.PhotoImage(Image.open(self.img_dst_path))
         self.panel = tk.Label(self.master, image=self.img_dst)
         self.panel.pack(side="bottom", fill="both", expand="yes")
@@ -117,21 +118,21 @@ class Application(tk.Frame):
         self.canvas.get_tk_widget().destroy()
         self.toolbar.destroy()
 
-        self.data = np.loadtxt('../share/motion-plan/simulation_1.txt')
-
         self.fig = Figure(figsize=(5, 4), dpi=100)
         self.canvas = FigureCanvasTkAgg(self.fig, master=root)
         self.canvas.draw()
         self.ax = self.fig.add_subplot(111, projection="3d")
 
-        self.x = self.data[:, 0]
-        self.y = self.data[:, 1]
-        self.z = self.data[:, 2]
-        self.ax.plot(self.x, self.y, self.z)
-
+        simulation_files = os.listdir("../share/motion-plan/simulation")
+        for i in range(len(simulation_files)):
+            self.data = np.loadtxt(
+                "../share/motion-plan/simulation/"+simulation_files[i])
+            self.x = self.data[:, 0]
+            self.y = self.data[:, 1]
+            self.z = self.data[:, 2]
+            self.ax.plot(self.x, self.y, self.z)
         # self.x = np.arange(0, 3, .01)
         # self.ax.plot(self.x, 2 * np.sin(2 * np.pi * self.x))
-
         self.toolbar = NavigationToolbar2Tk(self.canvas, root)
         self.toolbar.update()
         self.canvas.get_tk_widget().pack(side="top", fill="both", expand="yes")

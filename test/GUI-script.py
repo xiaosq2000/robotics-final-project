@@ -44,7 +44,7 @@ class Application(tk.Frame):
         self.disp_img_dst_button.pack(side="left")
 
         self.disp_img_dst_button = tk.Button(self)
-        self.disp_img_dst_button["text"] = "最优策略"
+        self.disp_img_dst_button["text"] = "最优路径"
         self.disp_img_dst_button["command"] = self.strategy
         self.disp_img_dst_button["font"] = self.my_font
         self.disp_img_dst_button.pack(side="left")

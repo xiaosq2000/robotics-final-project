@@ -10,10 +10,10 @@
 #ifndef _MOTION_PLAN_H_
 #define _MOTION_PLAN_H_
 
-#include <rigid-body-transformation.h>
+#include <tf.h>
 #include <fstream>
 
-class MotionPlan : private RigidBodyTransformation
+class MotionPlan : private TF
 {
 private:
     std::string trajectory_type_;

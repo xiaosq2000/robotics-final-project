@@ -13,7 +13,7 @@ MotionPlan::MotionPlan(const std::string &cam_param_path,
                        const double &l1,
                        const double &l2,
                        const double &l3,
-                       const double &l4) : RigidBodyTransformation::RigidBodyTransformation(cam_param_path, l1, l2, l3, l4)
+                       const double &l4) : TF::TF(cam_param_path, l1, l2, l3, l4)
 {
 }
 
@@ -47,7 +47,7 @@ void MotionPlan::GenerateJointPointsFile(const std::string &joint_pts_file_path)
 {
     this->joint_pts_file_path_ = joint_pts_file_path;
     std::ofstream pts_file;
-    pts_file.open(this->joint_pts_file_path_, std::ios::out);
+    pts_file.open(this->joint_pts_file_path_, std::ios::ate);
 
     Eigen::VectorXd rpy_coor_deviation(6);
     rpy_coor_deviation << this->rpy_coor_end_[0] - this->rpy_coor_begin_[0],
@@ -56,6 +56,9 @@ void MotionPlan::GenerateJointPointsFile(const std::string &joint_pts_file_path)
         this->rpy_coor_end_[3] - this->rpy_coor_begin_[3],
         this->rpy_coor_end_[4] - this->rpy_coor_begin_[4],
         this->rpy_coor_end_[5] - this->rpy_coor_begin_[5];
+        // 0,
+        // 0,
+        // 0;
     Eigen::VectorXd normalized_rpy_coor_deviation(6);
     double dist = rpy_coor_deviation.norm();
     normalized_rpy_coor_deviation = rpy_coor_deviation / dist;
@@ -123,7 +126,7 @@ void MotionPlan::Simulate(const std::string &rpy_pts_file_path)
     std::ifstream joint_pts_file;
     std::ofstream rpy_pts_file;
     joint_pts_file.open(this->joint_pts_file_path_, std::ios::in);
-    rpy_pts_file.open(rpy_pts_file_path, std::ios::out);
+    rpy_pts_file.open(rpy_pts_file_path, std::ios::ate);
 
     double tmp_joint_coor[6];
     double tmp_rpy_coor[6];

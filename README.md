@@ -10,11 +10,9 @@ Intel Realsense D455相机配合QKM SI7400开放式六轴串联机器人完成�
 
 ## 设计
 
-<img src="share/docs/graphics/UML数据流图.svg" style="zoom:150%;" />
+![UML数据流图](share/docs/graphics/UML数据流图.svg)
 
-
-
-![](share/docs/graphics/UML类图.svg)
+![UML类图](share/docs/graphics/UML类图.svg)
 
 ## 实现
 
@@ -62,26 +60,25 @@ Intel Realsense D455相机配合QKM SI7400开放式六轴串联机器人完成�
 ┗ 📜log.txt
 ```
 
-
-
 ## 进展
 
-![ ](share/docs/graphics/手眼标定.png)
+![手眼标定](share/docs/graphics/手眼标定.png)
 
+![采集图像](share/docs/graphics/采集图像.png)
 
+![物体识别](share/docs/graphics/物体识别.png)
 
-![](share/docs/graphics/采集图像.png)
+![最优路径](share/docs/graphics/最优路径.png)
 
-![](share/docs/graphics/物体识别.png)
+![运动规划_1](share/docs/graphics/运动规划_1.png)
 
-![](share/docs/graphics/最优路径.png)
-
-
-
-![](share/docs/graphics/运动规划_1.png)
-
-![](share/docs/graphics/运动规划_2.png)
+![运动规划_2](share/docs/graphics/运动规划_2.png)
 
 ## 原理
 
 …
+
+## 待办
+
+- 采集相机标定图像，起点图像
+- 通讯连接、指令

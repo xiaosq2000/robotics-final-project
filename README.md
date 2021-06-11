@@ -1,8 +1,7 @@
 # 《机器人学导论》课程设计
 
-
-
-[1]: https://github.com/xiaosq2000/robotics-final-project/blob/main/share/docs/latex/slide/slide.pdf	"幻灯片"
+[幻灯片](./share/docs/latex/slide/slide.pdf)
+[数学推导]((./share/docs/latex/theoretical-derivations/trajectory-planning.pdf))
 
 ## 任务分析
 
@@ -39,79 +38,9 @@ Intel Realsense D455相机配合QKM SI7400开放式六轴串联机器人完成�
 
 第三方库：
 
-- `Eigen`线性代数库（坐标变换）
-- `OpenCV`计算机视觉（手眼标定、矩形识别等）
-- `Poco`计算机网络（FTP）
-- `Intel Realsense SDK`相机驱动(捕捉RGB图像)
-
-文件树：
-
-```
-📦include
- ┣ 📜brick-construction.h
- ┣ 📜communication.h
- ┣ 📜eye-in-hand-calibration.h
- ┣ 📜FtpControl.h
- ┣ 📜geometric-median.h
- ┣ 📜motion-plan.h
- ┣ 📜sample.h
- ┗ 📜tf.h
-📦src
- ┣ 📜brick-construction.cpp
- ┣ 📜communication.cpp
- ┣ 📜eye-in-hand-calibration.cpp
- ┣ 📜FtpControl.cpp
- ┣ 📜geometric-median.cpp
- ┣ 📜motion-plan.cpp
- ┣ 📜sample.cpp
- ┗ 📜tf.cpp
-📦test
- ┣ 📜brick-construction.cpp
- ┣ 📜communication.cpp
- ┣ 📜euler_angle_visualization.py
- ┣ 📜eye-in-hand-calibration.cpp
- ┣ 📜GUI-script.py
- ┣ 📜main.cpp
- ┣ 📜motion-plan.cpp
- ┣ 📜sample.cpp
- ┗ 📜tf.cpp
-📦lib
- ┗ 📜libws2_32.a
-📦bin
- ┣ 📜libopencv_calib3d411.dll
- ┣ 📜libopencv_core411.dll
- ┣ 📜libopencv_dnn411.dll
- ┣ 📜libopencv_features2d411.dll
- ┣ 📜libopencv_flann411.dll
- ┣ 📜libopencv_highgui411.dll
- ┣ 📜libopencv_imgcodecs411.dll
- ┣ 📜libopencv_imgproc411.dll
- ┣ 📜libpcre-1.dll
- ┣ 📜libPocoFoundation.dll
- ┣ 📜libPocoNet.dll
- ┗ 📜realsense2.dll
-📦share
- ┣ 📂eye-in-hand-calibration
- ┃ ┣ 📂dst
- ┃ ┃ ┣ 📜camera_extrinsic_matrix.yml
- ┃ ┃ ┣ 📜camera_intrinsic_matrix.yml
- ┃ ┃ ┣ 📜img_dst_0.png
- ┃ ┃ ┣ 📜...
- ┃ ┃ ┗ 📜offset.txt
- ┃ ┗ 📂src
- ┃ ┃ ┣ 📜01.jpg
- ┃ ┃ ┣ ...
- ┃ ┃ ┗ 📜rpy.txt
- ┣ 📂motion-plan
- ┃ ┣ 📂simulation
- ┃ ┣ ...
- ┣ 📂sample
- ┃ ┗ 📜rpy.txt
- ┣ 📂target-recognition
- ┃ ┣ 📂dst
- ┃ ┃ ┣ 📜img_rectangle_detection.jpg
- ┃ ┃ ┗ 📜img_strategy.jpg
- ┃ ┗ 📂src
- ┃ ┃ ┗ 📜img_src.jpg
- ┗ 📜log.txt
-```
+- `Eigen`线性代数(坐标变换)，C++库
+- `OpenCV`计算机视觉(手眼标定、矩形识别等)，C++库
+- `Poco`计算机网络(FTP)，C++库
+- `Intel Realsense SDK`相机驱动(捕捉RGB图像)，C++库
+- `tkinter`图形用户界面，Python模块
+- `pytransform3d`3D可视化(刚体位姿)，Python模块

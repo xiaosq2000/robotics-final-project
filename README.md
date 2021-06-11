@@ -2,7 +2,7 @@
 
 [答辩幻灯片](./share/docs/latex/slide/slide.pdf)
 
-[轨迹规划的数学推导]((./share/docs/latex/theoretical-derivations/trajectory-planning.pdf))
+[轨迹规划的数学推导](./share/docs/latex/theoretical-derivations/trajectory-planning.pdf)
 
 Intel Realsense D455相机配合QKM SI7400开放式六轴串联机器人完成堆积木的任务。要求：
 

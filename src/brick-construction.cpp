@@ -1,5 +1,10 @@
 
 /**
+ * TODO: error: std::stod() out of range
+ * TODO: "line" and "Jump" path 
+ */
+
+/**
  * @file brick-construction.cpp
  * @author 肖书奇
  * @brief “积木类”与“搭建类”的实现
@@ -10,7 +15,7 @@
 
 #include <iostream>
 #include <fstream>
-
+#include <sstream>
 #include "opencv2/opencv.hpp"
 #include "opencv2/imgproc.hpp"
 #include "opencv2/imgcodecs.hpp"
@@ -57,7 +62,7 @@ Brick::~Brick()
  * @param brick_height 
  * 
  */
-Construction::Construction(const double *rpy_tool_config_src,
+Construction::Construction(const std::string &rpy_tool_config_src_path,
                            const std::string &construction_configuration,
                            const std::string &img_src_directory,
                            const std::string &img_dst_directory,
@@ -65,10 +70,22 @@ Construction::Construction(const double *rpy_tool_config_src,
                            const double &brick_width,
                            const double &brick_height)
 {
-    for (size_t i = 0; i < 6; i++)
+    std::ifstream rpy_config_src_file;
+    rpy_config_src_file.open(rpy_tool_config_src_path, std::ios::in);
+    if (!rpy_config_src_file)
     {
-        this->rpy_tool_config_src_[i];
+        std::cout << "File open error!" << std::endl;
     }
+    std::string raw_str, segmented_str;
+    std::getline(rpy_config_src_file, raw_str);
+    std::stringstream input(raw_str);
+    size_t i=0;
+    while (input >> segmented_str)
+    {
+        this->rpy_tool_config_src_[i] = std::stod(segmented_str);
+        i++;
+    }
+
     this->construction_configuration_ = construction_configuration;
     this->img_src_directory_ = img_src_directory;
     this->img_dst_directory_ = img_dst_directory;
@@ -154,7 +171,9 @@ bool LessSort(Brick a, Brick b) { return (a.pixel_dist_construction_center_ < b.
  */
 void Construction::Solution()
 {
+
     // location: geometric median with constraints
+
     std::vector<Eigen::Vector2d> pixel_pts;
     double tmp_angles = 0;
     for (size_t i = 0; i < this->bricks_.size(); i++)
@@ -164,10 +183,13 @@ void Construction::Solution()
     }
     double pixel_min_dist_sum;
     GeometricMedian(pixel_pts, this->pixel_coor_, pixel_min_dist_sum, this->diagonal_pixel_length_, 0.001);
+
     // Orientation: averge of angles
+
     this->angle_ = tmp_angles / this->bricks_.size();
 
     // Label
+
     for (size_t i = 0; i < this->bricks_.size(); i++)
     {
         this->bricks_[i].pixel_dist_construction_center_ = (this->bricks_[i].pixel_coor_ - this->pixel_coor_).norm();
@@ -177,7 +199,9 @@ void Construction::Solution()
     {
         this->bricks_[i].index_ = i; // Index starts from 0
     }
+
     // Display
+
     this->img_strategy = this->img_detection.clone();
     cv::circle(this->img_strategy, cv::Point(this->pixel_coor_(0), this->pixel_coor_(1)), 7, cv::Scalar(230, 224, 176), -1);
     cv::circle(this->img_strategy, cv::Point(this->pixel_coor_(0), this->pixel_coor_(1)), this->diagonal_pixel_length_ / 2, cv::Scalar(230, 224, 176), 1);
@@ -197,10 +221,11 @@ void Construction::Solution()
     double tmp_rpy_coor[3]{0}; // only xyz
     tf.Pixel2Camera(tmp_pixel_coor, tmp_camera_coor);
     tf.Camera2Tool(tmp_camera_coor, tmp_tool_coor);
-    tf.Tool2World(this->rpy_tool_config_src_, tmp_tool_coor, tmp_rpy_coor);
+    // tf.Tool2World(this->rpy_tool_config_src_, tmp_tool_coor, tmp_rpy_coor);
     this->camera_coor_ << tmp_camera_coor[0], tmp_camera_coor[1], tmp_camera_coor[2];
     this->tool_coor_ << tmp_tool_coor[0], tmp_tool_coor[1], tmp_tool_coor[2];
-    this->rpy_coor_ << tmp_rpy_coor[0], tmp_rpy_coor[1], tmp_rpy_coor[2], this->angle_, 0, 0;
+    // this->rpy_coor_ << tmp_rpy_coor[0], tmp_rpy_coor[1], tmp_rpy_coor[2], this->angle_, 0, 0;
+    this->rpy_coor_ << tmp_tool_coor[0], tmp_tool_coor[1], tmp_tool_coor[2], this->angle_, 0, 0;
 
     for (size_t i = 0; i < this->bricks_.size(); i++)
     {
@@ -210,10 +235,11 @@ void Construction::Solution()
         double tmp_rpy_coor[3]{0}; // only xyz
         tf.Pixel2Camera(tmp_pixel_coor, tmp_camera_coor);
         tf.Camera2Tool(tmp_camera_coor, tmp_tool_coor);
-        tf.Tool2World(this->rpy_tool_config_src_, tmp_tool_coor, tmp_rpy_coor);
+        // tf.Tool2World(this->rpy_tool_config_src_, tmp_tool_coor, tmp_rpy_coor);
         this->bricks_[i].camera_coor_ << tmp_camera_coor[0], tmp_camera_coor[1], tmp_camera_coor[2];
         this->bricks_[i].tool_coor_ << tmp_tool_coor[0], tmp_tool_coor[1], tmp_tool_coor[2];
-        this->bricks_[i].src_rpy_coor_ << tmp_rpy_coor[0], tmp_rpy_coor[1], tmp_rpy_coor[2], this->bricks_[i].angle_, 0, 0;
+        // this->bricks_[i].src_rpy_coor_ << tmp_rpy_coor[0], tmp_rpy_coor[1], tmp_rpy_coor[2], this->bricks_[i].angle_, 0, 0;
+        this->bricks_[i].src_rpy_coor_ << tmp_tool_coor[0], tmp_tool_coor[1], tmp_tool_coor[2], this->bricks_[i].angle_, 0, 0;
     }
 
     // Compute RPY pose at destination for each brick
@@ -259,8 +285,28 @@ void Construction::Solution()
         }
     }
 
+    // Generate control points
+
+    Eigen::VectorXd tmp_rpy_ctrl_pts = Eigen::VectorXd::Zero(6);
+    tmp_rpy_ctrl_pts << this->rpy_tool_config_src_[0],
+        this->rpy_tool_config_src_[1],
+        this->rpy_tool_config_src_[2],
+        this->rpy_tool_config_src_[3],
+        this->rpy_tool_config_src_[4],
+        this->rpy_tool_config_src_[5];
+    this->rpy_ctrl_pts_.push_back(tmp_rpy_ctrl_pts);
+    for (size_t i = 0; i < this->bricks_.size(); i++)
+    {
+        tmp_rpy_ctrl_pts = this->bricks_[i].src_rpy_coor_;
+        this->rpy_ctrl_pts_.push_back(tmp_rpy_ctrl_pts);
+        tmp_rpy_ctrl_pts = this->bricks_[i].dst_rpy_coor_;
+        this->rpy_ctrl_pts_.push_back(tmp_rpy_ctrl_pts);
+    }
+
     // Motion plan, and generate PPB points file
 
+    MotionPlan motion_plan;
+    /*
     for (size_t i = 0; i < this->bricks_.size(); i++)
     {
         double tmp_rpy_coor_begin[6]{
@@ -279,11 +325,46 @@ void Construction::Solution()
             this->bricks_[i].dst_rpy_coor_[4],
             this->bricks_[i].dst_rpy_coor_[5],
         };
-        MotionPlan motion_plan;
         motion_plan.Config(tmp_rpy_coor_begin, tmp_rpy_coor_end, 0.005, 100, 100, -100);
         std::cout << "Index: " << i << std::endl;
         motion_plan.GenerateJointPointsFile("../share/motion-plan/idx_" + std::to_string(i) + ".txt");
         motion_plan.Simulate("../share/motion-plan/simulation/simulation_" + std::to_string(i) + ".txt");
+    }
+*/
+    for (size_t i = 0; i < this->rpy_ctrl_pts_.size() - 1; i++)
+    { // .size() - 1
+        double tmp_rpy_coor_begin[6]{
+            this->rpy_ctrl_pts_[i][0],
+            this->rpy_ctrl_pts_[i][1],
+            this->rpy_ctrl_pts_[i][2],
+            this->rpy_ctrl_pts_[i][3],
+            this->rpy_ctrl_pts_[i][4],
+            this->rpy_ctrl_pts_[i][5],
+        };
+        double tmp_rpy_coor_end[6]{
+            this->rpy_ctrl_pts_[i + 1][0],
+            this->rpy_ctrl_pts_[i + 1][1],
+            this->rpy_ctrl_pts_[i + 1][2],
+            this->rpy_ctrl_pts_[i + 1][3],
+            this->rpy_ctrl_pts_[i + 1][4],
+            this->rpy_ctrl_pts_[i + 1][5],
+        };
+        motion_plan.Config(tmp_rpy_coor_begin, tmp_rpy_coor_end, 0.005, 100, 100, -100);
+        std::cout << "Line: " << i + 1 << std::endl;
+        if (i < 9)
+        {
+            motion_plan.GenerateJointPointsFile("../share/motion-plan/line_0" + std::to_string(i + 1) + ".txt");
+            // motion_plan.Simulate("../share/motion-plan/simulation/simulation_0" + std::to_string(i + 1) + ".txt");
+            if (i != 0) // error: std::stod() out of range
+            {
+                motion_plan.Simulate("../share/motion-plan/simulation/simulation_0" + std::to_string(i + 1) + ".txt");
+            }
+        }
+        if (i >= 9)
+        {
+            motion_plan.GenerateJointPointsFile("../share/motion-plan/line_" + std::to_string(i + 1) + ".txt");
+            motion_plan.Simulate("../share/motion-plan/simulation/simulation_" + std::to_string(i + 1) + ".txt");
+        }
     }
 }
 
@@ -295,41 +376,50 @@ void Construction::Solution()
  */
 void Construction::Log(const std::string &log_path)
 {
-    std::ofstream log_file;
-    log_file.open(log_path, std::ios::ate);
+    // std::ofstream log_file;
+    // log_file.open(log_path, std::ios::ate);
 
-    log_file << "起始点夹具的位姿(RPY): "
-             << this->rpy_tool_config_src_[0] << ", "
-             << this->rpy_tool_config_src_[1] << ", "
-             << this->rpy_tool_config_src_[2] << ", "
-             << this->rpy_tool_config_src_[3] << ", "
-             << this->rpy_tool_config_src_[4] << ", "
-             << this->rpy_tool_config_src_[5]
-             << std::endl;
-    log_file << "搭建中心点像素: " << std::endl
-             << this->pixel_coor_ << std::endl;
-    log_file << "积木塔旋转角度: " << this->angle_ << std::endl;
-    log_file << "相机坐标系下搭建中心点的坐标: " << std::endl
-             << this->camera_coor_ << std::endl;
-    log_file << "工具坐标系下搭建中心点的坐标: " << std::endl
-             << this->tool_coor_ << std::endl;
-    log_file << "世界坐标系下搭建中心点的坐标: " << std::endl
-             << this->rpy_coor_ << std::endl;
-    log_file << std::endl;
-    for (size_t i = 0; i < this->bricks_.size(); i++)
+    // log_file << "起始点夹具的位姿(RPY): "
+    //          << this->rpy_tool_config_src_[0] << ", "
+    //          << this->rpy_tool_config_src_[1] << ", "
+    //          << this->rpy_tool_config_src_[2] << ", "
+    //          << this->rpy_tool_config_src_[3] << ", "
+    //          << this->rpy_tool_config_src_[4] << ", "
+    //          << this->rpy_tool_config_src_[5]
+    //          << std::endl;
+    // log_file << "搭建中心点像素: " << std::endl
+    //          << this->pixel_coor_ << std::endl;
+    // log_file << "积木塔旋转角度: " << this->angle_ << std::endl;
+    // log_file << "相机坐标系下搭建中心点的坐标: " << std::endl
+    //          << this->camera_coor_ << std::endl;
+    // log_file << "工具坐标系下搭建中心点的坐标: " << std::endl
+    //          << this->tool_coor_ << std::endl;
+    // log_file << "世界坐标系下搭建中心点的坐标: " << std::endl
+    //          << this->rpy_coor_ << std::endl;
+    // log_file << std::endl;
+    // for (size_t i = 0; i < this->bricks_.size(); i++)
+    // {
+    //     log_file << "序号: " << this->bricks_[i].index_ << std::endl;
+    //     log_file << "起始中心点像素: " << std::endl
+    //              << this->bricks_[i].camera_coor_ << std::endl;
+    //     log_file << "旋转角度: " << this->bricks_[i].angle_ << std::endl;
+    //     log_file << "相机坐标系下起始中心点的坐标: " << std::endl
+    //              << this->bricks_[i].camera_coor_ << std::endl;
+    //     log_file << "工具坐标系下起始中心点的坐标: " << std::endl
+    //              << this->bricks_[i].tool_coor_ << std::endl;
+    //     log_file << "世界坐标系下积木的起始位姿(RPY): " << std::endl
+    //              << this->bricks_[i].src_rpy_coor_ << std::endl;
+    //     log_file << "世界坐标系下积木的终点位姿(RPY): " << std::endl
+    //              << this->bricks_[i].dst_rpy_coor_ << std::endl;
+    // }
+    // log_file.close();
+
+    std::ofstream key_pts_file;
+    key_pts_file.open(log_path, std::ios::ate);
+    Eigen::IOFormat CleanFmt(4, 0, ", ", " ", "", "");
+    for (size_t i = 0; i < this->rpy_ctrl_pts_.size(); i++)
     {
-        log_file << "序号: " << this->bricks_[i].index_ << std::endl;
-        log_file << "起始中心点像素: " << std::endl
-                 << this->bricks_[i].camera_coor_ << std::endl;
-        log_file << "旋转角度: " << this->bricks_[i].angle_ << std::endl;
-        log_file << "相机坐标系下起始中心点的坐标: " << std::endl
-                 << this->bricks_[i].camera_coor_ << std::endl;
-        log_file << "工具坐标系下起始中心点的坐标: " << std::endl
-                 << this->bricks_[i].tool_coor_ << std::endl;
-        log_file << "世界坐标系下积木的起始位姿(RPY): " << std::endl
-                 << this->bricks_[i].src_rpy_coor_ << std::endl;
-        log_file << "世界坐标系下积木的终点位姿(RPY): " << std::endl
-                 << this->bricks_[i].dst_rpy_coor_ << std::endl;
+        key_pts_file << this->rpy_ctrl_pts_[i].format(CleanFmt) << std::endl;
     }
-    log_file.close();
+    key_pts_file.close();
 }

@@ -11,8 +11,9 @@
 #define _RIGID_BODY_TRANSFORMATION_H_
 
 #include <iostream>
+#include <fstream>
 #include "Eigen/Dense"
-#include <opencv2/core/eigen.hpp>
+#include "opencv2/core/eigen.hpp"
 
 using namespace Eigen;
 
@@ -27,6 +28,8 @@ class TF
 private:
     Matrix3d cam_int_param_;
     Matrix4d cam_ext_param_;
+    double target_height_offset_;
+    double depth_;
 
     bool config_[3] = {1, 1, 1};
     double link_length_1_;
@@ -37,11 +40,13 @@ private:
     Vector3d q_[6];
 
 public:
-    TF(const std::string &cam_param_path = "../share/eye-in-hand-calibration/dst",
-                            const double &l1 = 0.491,
-                            const double &l2 = 0.45,
-                            const double &l3 = 0.45,
-                            const double &l4 = 0.084);
+    TF(const std::string &cam_param_diretory = "../share/eye-in-hand-calibration/dst",
+       const std::string &src_directory = "../share/sample",
+       const double &target_height_offset = 15,
+       const double &l1 = 0.491,
+       const double &l2 = 0.45,
+       const double &l3 = 0.45,
+       const double &l4 = 0.084);
     ~TF();
 
     void InverseKinematics(const double *g_vec, double *joint_coor, bool *config);

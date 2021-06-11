@@ -1,8 +1,9 @@
+
 /**
  * @file motion-plan.h
  * @author 肖书奇
- * @brief HL机器人“梯形运动规划类”的声明
- * @version 0.1
+ * @brief HL机器人“运动规划类”的声明
+ * @version 1.0
  * @date 2021-05-31
  * 
  */
@@ -29,6 +30,8 @@ private:
 
 public:
     MotionPlan(const std::string &cam_param_path = "../share/eye-in-hand-calibration/dst",
+               const std::string &src_directory = "../share/sample",
+               const double &target_height_offset = 15,
                const double &l1 = 0.491,
                const double &l2 = 0.45,
                const double &l3 = 0.45,

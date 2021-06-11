@@ -1,3 +1,10 @@
+
+/**
+ * TODO: Refractor the relationship with class `EyeInHandCalibration`.
+ *       especially, the `Pixel2Camera()` constant number 15 and path configuration.
+ * 
+ */
+
 /**
  * @file tf.cpp
  * @author 肖书奇
@@ -9,32 +16,37 @@
  */
 
 #include "tf.h"
+#include <sstream>
 
 const double PI = 3.1415926;
 
 /**
- * @brief Construct a new Rigid Body Transformation:: Rigid Body Transformation object.
+ * @brief Construct a new TF::TF object
  * 
- * @param path - the file directory containing camera parameters with YAML extension
+ * @param cam_param_directory 
+ * @param src_directory 
+ * @param target_height_offset 
  * @param l1 - link 1 length 
  * @param l2 - link 2 length 
  * @param l3 - link 3 length 
  * @param l4 - link 4 length 
  * 
  */
-TF::TF(const std::string &cam_param_path,
-                                                 const double &l1,
-                                                 const double &l2,
-                                                 const double &l3,
-                                                 const double &l4)
+TF::TF(const std::string &cam_param_directory,
+       const std::string &src_directory,
+       const double &target_height_offset,
+       const double &l1,
+       const double &l2,
+       const double &l3,
+       const double &l4)
 {
     cv::Mat cam_int_param, cam_ext_param;
-    cv::FileStorage fs1(cam_param_path + "/camera_intrinsic_matrix.yml", cv::FileStorage::READ);
+    cv::FileStorage fs1(cam_param_directory + "/camera_intrinsic_matrix.yml", cv::FileStorage::READ);
     fs1["camera_intrinsic_matrix"] >> cam_int_param;
     fs1.release();
     cv::cv2eigen(cam_int_param, this->cam_int_param_);
 
-    cv::FileStorage fs2(cam_param_path + "/camera_extrinsic_matrix.yml", cv::FileStorage::READ);
+    cv::FileStorage fs2(cam_param_directory + "/camera_extrinsic_matrix.yml", cv::FileStorage::READ);
     fs2["camera_extrinsic_matrix"] >> cam_ext_param;
     fs2.release();
     cv::cv2eigen(cam_ext_param, this->cam_ext_param_);
@@ -57,6 +69,25 @@ TF::TF(const std::string &cam_param_path,
     this->q_[3] = Vector3d(0, 0, 0);
     this->q_[4] = Vector3d(0, 0, l1 + l2 + l3);
     this->q_[5] = Vector3d(0, 0, 0);
+
+    // depth_
+    this->target_height_offset_ = target_height_offset;
+    this->depth_ = 0;
+    std::ifstream rpy_file;
+    rpy_file.open(src_directory + "/rpy.txt");
+    std::string raw_str;
+    std::getline(rpy_file, raw_str);
+    double rpy_tool_src_config[6];
+    std::stringstream input(raw_str); // segment
+    std::string segmented_str;
+    size_t i = 0;
+    while (input >> segmented_str)
+    {
+        rpy_tool_src_config[i] = std::stod(segmented_str);
+        i++;
+    }
+    this->depth_ += rpy_tool_src_config[2];
+    this->depth_ -= target_height_offset;
 }
 
 /**
@@ -374,12 +405,18 @@ void PadenKahanSubproblem3(Vector3d p, Vector3d q, Vector3d r, Vector3d w, doubl
  */
 void TF::Pixel2Camera(const double *pixel_coor, double *camera_coor)
 {
-    double z = 380;
+    std::ifstream offset_file;
+    offset_file.open("../share/eye-in-hand-calibration/dst/offset.txt", std::ios::in);
+    std::string raw_str;
+    std::getline(offset_file, raw_str);
+    this->depth_ = 100 + (std::stod(raw_str) - this->target_height_offset_);
+    offset_file.close();
+
     Vector3d pixel_homo_coor{
         pixel_coor[0],
         pixel_coor[1],
         1};
-    Vector3d camera_homo_coor = this->cam_int_param_.inverse() * z * pixel_homo_coor;
+    Vector3d camera_homo_coor = this->cam_int_param_.inverse() * this->depth_ * pixel_homo_coor;
     camera_coor[0] = camera_homo_coor[0];
     camera_coor[1] = camera_homo_coor[1];
     camera_coor[2] = camera_homo_coor[2];
@@ -409,7 +446,7 @@ void TF::Tool2World(const double *rpy_tool_config, const double *tool_coor, doub
 {
     Matrix4d g_world2tool = Matrix4d::Zero();
     g_world2tool = Rpy2Homo(rpy_tool_config[0], rpy_tool_config[1], rpy_tool_config[2], rpy_tool_config[3], rpy_tool_config[4], rpy_tool_config[5]);
-    Vector4d tmp_tool_coor {tool_coor[0], tool_coor[1], tool_coor[2], 1};
+    Vector4d tmp_tool_coor{tool_coor[0], tool_coor[1], tool_coor[2], 1};
     Vector4d tmp_rpy_coor = Vector4d::Zero();
     tmp_rpy_coor = g_world2tool * tmp_tool_coor;
     for (size_t i = 0; i < 3; i++)

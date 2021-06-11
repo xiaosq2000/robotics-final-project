@@ -3,7 +3,11 @@
         {
             "name": "Win32",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+				"C:\\eigen3",
+                "C:\\OpenCV\\OpenCV-MinGW-Build-OpenCV-4.1.1-x64\\include",
+                "C:\\Program Files (x86)\\Intel RealSense SDK 2.0\\include",
+                "C:\\Poco\\mingw64\\include"
             ],
             "defines": [
                 "_DEBUG",

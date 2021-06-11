@@ -1,0 +1,22 @@
+\frametitle{目标规划：最优搭建中心的确定}
+\begin{itemize}
+    \item 与各个积木初始位置的距离之和最小
+    \item 不可与积木初始位置重叠
+\end{itemize}
+\[
+    \begin{aligned}
+             &  &  & p=[x,y,z,r,p,y]^T,\quad f(p) = \sum_{i=1}^N \Vert p-q_i \Vert \\
+        s.t. &  &  & \Vert p-q_i \Vert \geq k                                      \\
+        \min &  &  & f(p)
+    \end{aligned}
+\]
+\begin{center}
+    含约束的凸优化问题，用数值方法求解。
+\end{center}
+\semiverbatim
+\textcolor{blue}{void} \textcolor{gray}{GeometricMedian}(\textcolor{blue}{const} \textcolor{orange}{vector<Vector2d>} \textcolor{blue}{\&}\textcolor{gray}{points},
+                    \textcolor{orange}{Vector2d} \textcolor{blue}{\&}\textcolor{gray}{center},
+                    \textcolor{blue}{double \&}\textcolor{gray}{min\_dist},
+                    \textcolor{blue}{const double \&}\textcolor{gray}{forbidden\_zone\_radius},
+                    \textcolor{blue}{const double \&}\textcolor{gray}{lower\_limit});
+\endsemiverbaltim

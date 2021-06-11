@@ -1,4 +1,7 @@
 
+#ifndef _FTP_CONTROL_H_
+#define _FTP_CONTROL_H_
+
 #include <iostream>
 
 class FtpControl
@@ -9,3 +12,5 @@ public:
 
     static bool CheckServer(std::string ip);
 };
+
+#endif

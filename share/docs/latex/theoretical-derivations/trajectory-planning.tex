@@ -1,0 +1,131 @@
+% Tufte style handout
+\documentclass{tufte-handout}
+% Book metadata
+\title{轨迹规划}
+\author{肖书奇}
+% Uncomment this line if you prefer colored hyperlinks (e.g., for onscreen viewing)
+\hypersetup{colorlinks}              
+% Compatibility with xelatex engine
+\usepackage{ifxetex}
+\ifxetex
+    \newcommand{\textls}[2][5]{%
+        \begingroup\addfontfeatures{LetterSpace=#1}#2\endgroup
+    }
+    \renewcommand{\allcapsspacing}[1]{\textls[15]{#1}}
+    \renewcommand{\smallcapsspacing}[1]{\textls[10]{#1}}
+    \renewcommand{\allcaps}[1]{\textls[15]{\MakeTextUppercase{#1}}}
+    \renewcommand{\smallcaps}[1]{\smallcapsspacing{\scshape\MakeTextLowercase{#1}}}
+    \renewcommand{\textsc}[1]{\smallcapsspacing{\textsmallcaps{#1}}}
+\fi
+% 支持中文
+\usepackage{ctex}
+\usepackage{xeCJK}
+\xeCJKsetup{PunctStyle=kaiming}  % 设置中文标点符号，开明式
+% \xeCJKsetup{PunctStyle=quanjiao} % 设置中文标点符号，全角式
+\setCJKmainfont{仓耳今楷05-6763}      % 设置正文罗马族的 CJK 字体，影响 \rmfamily 和 \textrm 的字体。
+% \setCJKsansfont{}  % 设置正文无衬线族的 CJK 字体，影响 \sffamily 和 \textsf 的字体。
+\setCJKmonofont{SimHei}          % 设置正文等宽族的 CJK 字体，影响 \ttfamily 和 \texttt 的字体。
+% Supports AMS math
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+% For nicely typeset tabular material
+\usepackage{booktabs}
+% For graphics / images
+\usepackage{graphicx}
+    \setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio} % Set default scale globally
+    \graphicspath{{graphics/}}        % Set paths to search for images
+\begin{document}
+\maketitle
+% \tableofcontents   % TOC
+\section{操作空间、梯形速度}
+\marginnote[13cm]
+{
+    \begin{enumerate}
+        \item
+              输入梯形速度规划六参数
+              \begin{itemize}
+                  \item 起点位姿
+                  \item 终点位姿
+                  \item 采样时间
+                  \item 最大速度
+                  \item 加速阶段加速度
+                  \item 减速阶段加速度
+              \end{itemize}
+        \item
+              求出加速、减速、匀速三阶段所需时间
+        \item
+              定义方向向量和采样点数
+        \item
+              确定加速阶段结束点、减速阶段起始点的序号
+        \item
+              代入运动学公式
+        \item
+              转为递推形式
+    \end{enumerate}
+}
+\[
+    \vec x_0,\ \vec x_1,\ t_s,\ v,\ a_{acc},\ a_{dec}
+\]
+\[
+    t_{acc} := \frac{v}{a_{acc}},\ t_{dec} := \frac{v}{a_{dec}},\ t_v := \left.\left(\vert x\vert-\frac{v^2}{2a_{acc}}-\frac{v^2}{2a_{dec}}\right)\right/v
+\]
+\[
+    \vec k = \frac{\vec x}{\vert x\vert},\ N:=\frac{t}{t_s}
+\]
+\[
+    N_{acc} = N\frac{t_{acc}}{t},\ N_{dec} = N(1-\frac{t_{dec}}{t})
+\]
+\[
+    \vec x(n) = \left\{\begin{aligned}
+         & \dfrac{1}{2}\vec k a_{acc}(nt_s)^2                                                                                     &  & 0<n<N_{acc}       \\
+         & \dfrac{1}{2}\vec k a_{acc}(N_{acc}t_s)^2 + \vec k v(nt_s-t_{acc})                                                      &  & N_{acc}<n<N_{dec} \\
+         & \dfrac{1}{2}\vec k a_{acc}(N_{acc}t_s)^2 + \vec k v(N_{dec}t_s-t_{acc}) - \frac{1}{2}\vec k a_{dec}(nt_s-N_{dec}t_s)^2 &  & N_{dec}<n<N
+    \end{aligned}\right.
+\]
+\[
+    \vec x(n+1)- \vec x(n) = \left\{\begin{aligned}
+         & \dfrac{1}{2} a_{acc} \vec k t_s^2(2n+1)                      &  & 0<n<N_{acc}       \\
+         & v\vec kt_s                                                   &  & N_{acc}<n<N_{dec} \\
+         & v \vec k t_s-\frac{1}{2} a_{dec} \vec k t_s^2(2n+1-2N_{dec}) &  & N_{dec}<n<N
+    \end{aligned}\right.
+\]
+% \marginnote{
+%     计算三阶段所需时间
+%     \begin{itemize}
+%         \item 加速所需时间
+%         \item 减速所需时间
+%         \item 匀速所需时间
+%     \end{itemize}
+% }
+% \[
+%     % \vec x := \vec x_1- \vec x_0;\quad t:=t_{acc}+t_{v}+t_{dec}
+% \]
+% \[
+%     \text{单位向量}:\vec k = \frac{\vec x}{\vert x\vert}
+% \]
+% \[
+%     \text{采样点数}:N=\frac{t}{t_s}
+% \]
+% \[
+%     \begin{aligned}
+%          & \text{加速阶段结束点的序号}: N_{acc} = N\frac{t_{acc}}{t}     \\
+%          & \text{减速阶段开始点的序号}: N_{dec} = N(1-\frac{t_{dec}}{t})
+%     \end{aligned}
+% \]
+% \[
+%     \vec x(n) = \left\{\begin{aligned}
+%          & \dfrac{1}{2}\vec k a_{acc}(nt_s)^2                                                                                     &  & 0<n<N_{acc}       \\
+%          & \dfrac{1}{2}\vec k a_{acc}(N_{acc}t_s)^2 + \vec k v(nt_s-t_{acc})                                                      &  & N_{acc}<n<N_{dec} \\
+%          & \dfrac{1}{2}\vec k a_{acc}(N_{acc}t_s)^2 + \vec k v(N_{dec}t_s-t_{acc}) - \frac{1}{2}\vec k a_{dec}(nt_s-N_{dec}t_s)^2 &  & N_{dec}<n<N
+%     \end{aligned}\right.
+% \]
+% 转为递推关系
+% \[
+%     \vec x(n+1)- \vec x(n) = \left\{\begin{aligned}
+%          & \dfrac{1}{2} a_{acc} \vec k t_s^2(2n+1)                      &  & 0<n<N_{acc}       \\
+%          & v\vec kt_s                                                   &  & N_{acc}<n<N_{dec} \\
+%          & v \vec k t_s-\frac{1}{2} a_{dec} \vec k t_s^2(2n+1-2N_{dec}) &  & N_{dec}<n<N
+%     \end{aligned}\right.
+% \]
+\end{document}

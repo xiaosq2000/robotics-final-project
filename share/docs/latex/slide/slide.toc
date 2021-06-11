@@ -1,0 +1,12 @@
+\beamer@sectionintoc {1}{任务分析}{3}{0}{1}
+\beamer@subsectionintoc {1}{1}{堆积木}{3}{0}{1}
+\beamer@subsectionintoc {1}{2}{子任务与解决方案}{4}{0}{1}
+\beamer@sectionintoc {2}{原理简介}{5}{0}{2}
+\beamer@subsectionintoc {2}{1}{逆运动学}{5}{0}{2}
+\beamer@subsectionintoc {2}{2}{路径规划}{6}{0}{2}
+\beamer@subsectionintoc {2}{3}{轨迹规划}{7}{0}{2}
+\beamer@sectionintoc {3}{软件系统}{8}{0}{3}
+\beamer@subsectionintoc {3}{1}{系统设计}{8}{0}{3}
+\beamer@subsectionintoc {3}{2}{工程实现}{10}{0}{3}
+\beamer@subsectionintoc {3}{3}{成果演示}{11}{0}{3}
+\beamer@sectionintoc {4}{总结}{17}{0}{4}

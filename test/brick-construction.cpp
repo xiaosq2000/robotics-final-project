@@ -7,12 +7,12 @@
  * @date 2021-06-01
  * 
  */
+
 #include "brick-construction.h"
 
 int main()
 {
-    double rpy_tool_src[6]{489.007, 16.974, 582.742, 0.000, 180.000, 40.000};
-    Construction construction(rpy_tool_src);
+    Construction construction;
     construction.BricksDetection();
     construction.Solution();
     construction.Log();

@@ -37,13 +37,18 @@ class Construction
 {
 private:
     double rpy_tool_config_src_[6];
-    std::string construction_configuration_;
-    std::string img_src_directory_;
-    std::string img_dst_directory_;
 
     double brick_length_;
     double brick_width_;
     double brick_height_;
+
+    std::string construction_configuration_;
+    std::string img_src_directory_;
+    std::string img_dst_directory_;
+    cv::Mat img_src;
+    cv::Mat img_detection;
+    cv::Mat img_strategy;
+    double diagonal_pixel_length_;
 
     std::vector<Brick> bricks_;
     Eigen::Vector2d pixel_coor_;
@@ -52,18 +57,15 @@ private:
     Eigen::Vector3d tool_coor_;
     Eigen::VectorXd rpy_coor_;
 
-    cv::Mat img_src;
-    cv::Mat img_detection;
-    cv::Mat img_strategy;
-    double diagonal_pixel_length_;
+    std::vector<Eigen::VectorXd> rpy_ctrl_pts_;
 public:
-    Construction(const double *rpy_tool_config_src,
+    Construction(const std::string &rpy_tool_config_src_path = "../share/sample/rpy.txt",
                  const std::string &construction_configuration = "base",
                  const std::string &img_src_directory = "../share/target-recognition/src",
                  const std::string &img_dst_directory = "../share/target-recognition/dst",
-                 const double &brick_length = 500,
-                 const double &brick_width = 500,
-                 const double &brick_height = 150);
+                 const double &brick_length = 100,
+                 const double &brick_width = 100,
+                 const double &brick_height = 15);
     ~Construction();
     void BricksDetection();
     void Solution();

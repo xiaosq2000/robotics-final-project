@@ -11,9 +11,8 @@
 
 int main()
 {
-    // Construct a new object
+    // Construct a new `TF` object
 
-    // TF tf("../share/eye-in-hand-calibration/dst", 0.491, 0.45, 0.45, 0.084);
     TF tf; // Use default parameters
 
     // Inverse kinematics test

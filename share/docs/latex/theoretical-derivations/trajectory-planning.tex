@@ -65,29 +65,29 @@
     \end{enumerate}
 }
 \[
-    \vec x_0,\ \vec x_1,\ t_s,\ v,\ a_{acc},\ a_{dec}
+    \mathbf x_0,\ \mathbf x_1,\ t_s,\ v,\ a_{acc},\ a_{dec}
 \]
 \[
     t_{acc} := \frac{v}{a_{acc}},\ t_{dec} := \frac{v}{a_{dec}},\ t_v := \left.\left(\vert x\vert-\frac{v^2}{2a_{acc}}-\frac{v^2}{2a_{dec}}\right)\right/v
 \]
 \[
-    \vec k = \frac{\vec x}{\vert x\vert},\ N:=\frac{t}{t_s}
+    \mathbf k = \frac{\mathbf x}{\vert x\vert},\ N:=\frac{t}{t_s}
 \]
 \[
     N_{acc} = N\frac{t_{acc}}{t},\ N_{dec} = N(1-\frac{t_{dec}}{t})
 \]
 \[
-    \vec x(n) = \left\{\begin{aligned}
-         & \dfrac{1}{2}\vec k a_{acc}(nt_s)^2                                                                                     &  & 0<n<N_{acc}       \\
-         & \dfrac{1}{2}\vec k a_{acc}(N_{acc}t_s)^2 + \vec k v(nt_s-t_{acc})                                                      &  & N_{acc}<n<N_{dec} \\
-         & \dfrac{1}{2}\vec k a_{acc}(N_{acc}t_s)^2 + \vec k v(N_{dec}t_s-t_{acc}) - \frac{1}{2}\vec k a_{dec}(nt_s-N_{dec}t_s)^2 &  & N_{dec}<n<N
+    \mathbf x(n) = \left\{\begin{aligned}
+         & \dfrac{1}{2}\mathbf k a_{acc}(nt_s)^2                                                                                     &  & 0<n<N_{acc}       \\
+         & \dfrac{1}{2}\mathbf k a_{acc}(N_{acc}t_s)^2 + \mathbf k v(nt_s-t_{acc})                                                      &  & N_{acc}<n<N_{dec} \\
+         & \dfrac{1}{2}\mathbf k a_{acc}(N_{acc}t_s)^2 + \mathbf k v(N_{dec}t_s-t_{acc}) - \frac{1}{2}\mathbf k a_{dec}(nt_s-N_{dec}t_s)^2 &  & N_{dec}<n<N
     \end{aligned}\right.
 \]
 \[
-    \vec x(n+1)- \vec x(n) = \left\{\begin{aligned}
-         & \dfrac{1}{2} a_{acc} \vec k t_s^2(2n+1)                      &  & 0<n<N_{acc}       \\
-         & v\vec kt_s                                                   &  & N_{acc}<n<N_{dec} \\
-         & v \vec k t_s-\frac{1}{2} a_{dec} \vec k t_s^2(2n+1-2N_{dec}) &  & N_{dec}<n<N
+    \mathbf x(n+1)- \mathbf x(n) = \left\{\begin{aligned}
+         & \dfrac{1}{2} a_{acc} \mathbf k t_s^2(2n+1)                      &  & 0<n<N_{acc}       \\
+         & v\mathbf kt_s                                                   &  & N_{acc}<n<N_{dec} \\
+         & v \mathbf k t_s-\frac{1}{2} a_{dec} \mathbf k t_s^2(2n+1-2N_{dec}) &  & N_{dec}<n<N
     \end{aligned}\right.
 \]
 % \marginnote{
@@ -99,10 +99,10 @@
 %     \end{itemize}
 % }
 % \[
-%     % \vec x := \vec x_1- \vec x_0;\quad t:=t_{acc}+t_{v}+t_{dec}
+%     % \mathbf x := \mathbf x_1- \mathbf x_0;\quad t:=t_{acc}+t_{v}+t_{dec}
 % \]
 % \[
-%     \text{单位向量}:\vec k = \frac{\vec x}{\vert x\vert}
+%     \text{单位向量}:\mathbf k = \frac{\mathbf x}{\vert x\vert}
 % \]
 % \[
 %     \text{采样点数}:N=\frac{t}{t_s}
@@ -114,18 +114,18 @@
 %     \end{aligned}
 % \]
 % \[
-%     \vec x(n) = \left\{\begin{aligned}
-%          & \dfrac{1}{2}\vec k a_{acc}(nt_s)^2                                                                                     &  & 0<n<N_{acc}       \\
-%          & \dfrac{1}{2}\vec k a_{acc}(N_{acc}t_s)^2 + \vec k v(nt_s-t_{acc})                                                      &  & N_{acc}<n<N_{dec} \\
-%          & \dfrac{1}{2}\vec k a_{acc}(N_{acc}t_s)^2 + \vec k v(N_{dec}t_s-t_{acc}) - \frac{1}{2}\vec k a_{dec}(nt_s-N_{dec}t_s)^2 &  & N_{dec}<n<N
+%     \mathbf x(n) = \left\{\begin{aligned}
+%          & \dfrac{1}{2}\mathbf k a_{acc}(nt_s)^2                                                                                     &  & 0<n<N_{acc}       \\
+%          & \dfrac{1}{2}\mathbf k a_{acc}(N_{acc}t_s)^2 + \mathbf k v(nt_s-t_{acc})                                                      &  & N_{acc}<n<N_{dec} \\
+%          & \dfrac{1}{2}\mathbf k a_{acc}(N_{acc}t_s)^2 + \mathbf k v(N_{dec}t_s-t_{acc}) - \frac{1}{2}\mathbf k a_{dec}(nt_s-N_{dec}t_s)^2 &  & N_{dec}<n<N
 %     \end{aligned}\right.
 % \]
 % 转为递推关系
 % \[
-%     \vec x(n+1)- \vec x(n) = \left\{\begin{aligned}
-%          & \dfrac{1}{2} a_{acc} \vec k t_s^2(2n+1)                      &  & 0<n<N_{acc}       \\
-%          & v\vec kt_s                                                   &  & N_{acc}<n<N_{dec} \\
-%          & v \vec k t_s-\frac{1}{2} a_{dec} \vec k t_s^2(2n+1-2N_{dec}) &  & N_{dec}<n<N
+%     \mathbf x(n+1)- \mathbf x(n) = \left\{\begin{aligned}
+%          & \dfrac{1}{2} a_{acc} \mathbf k t_s^2(2n+1)                      &  & 0<n<N_{acc}       \\
+%          & v\mathbf kt_s                                                   &  & N_{acc}<n<N_{dec} \\
+%          & v \mathbf k t_s-\frac{1}{2} a_{dec} \mathbf k t_s^2(2n+1-2N_{dec}) &  & N_{dec}<n<N
 %     \end{aligned}\right.
 % \]
 \end{document}

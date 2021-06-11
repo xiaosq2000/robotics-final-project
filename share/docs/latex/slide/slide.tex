@@ -7,7 +7,7 @@
 % http://www.LaTeXTemplates.com
 %
 % License:
-% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+% CC BY-NC-SA 3.0 (http://creatimathbfommons.org/licenses/by-nc-sa/3.0/)
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -220,7 +220,7 @@
         \item 自行编写的算法时间复杂度为\(O(MN^2)\) \par \(M\)为搜索范围，\(N\)为物体数目。
     \end{itemize}
     % \begin{semiverbatim}
-    % \textcolor{blue}{void} \textcolor{gray}{GeometricMedian}(\textcolor{blue}{const} \textcolor{orange}{vector<Vector2d>} \textcolor{blue}{\&}\textcolor{gray}{points},
+    % \textcolor{blue}{void} \textcolor{gray}{GeometricMedian}(\textcolor{blue}{const} \textcolor{orange}{mathbftor<Vector2d>} \textcolor{blue}{\&}\textcolor{gray}{points},
     %                     \textcolor{orange}{Vector2d} \textcolor{blue}{\&}\textcolor{gray}{center}, 
     %                     \textcolor{blue}{double \&}\textcolor{gray}{min\_dist},
     %                     \textcolor{blue}{const double \&}\textcolor{gray}{forbidden\_zone\_radius},
@@ -235,10 +235,10 @@
 \begin{frame}
     \frametitle{轨迹规划：操作空间，梯形速度}
     \[
-        \vec x(n+1)- \vec x(n) = \left\{\begin{aligned}
-             & \dfrac{1}{2} a_{acc} \vec k t_s^2(2n+1)                      &  & 0<n<N_{acc}       \\
-             & v\vec kt_s                                                   &  & N_{acc}<n<N_{dec} \\
-             & v \vec k t_s-\frac{1}{2} a_{dec} \vec k t_s^2(2n+1-2N_{dec}) &  & N_{dec}<n<N
+        \mathbf x(n+1)- \mathbf x(n) = \left\{\begin{aligned}
+             & \dfrac{1}{2} a_{acc} \mathbf k t_s^2(2n+1)                      &  & 0<n<N_{acc}       \\
+             & v\mathbf kt_s                                                   &  & N_{acc}<n<N_{dec} \\
+             & v \mathbf k t_s-\frac{1}{2} a_{dec} \mathbf k t_s^2(2n+1-2N_{dec}) &  & N_{dec}<n<N
         \end{aligned}\right.
     \]
     \centering

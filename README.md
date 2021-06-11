@@ -10,6 +10,8 @@ Intel Realsense D455相机配合QKM SI7400开放式六轴串联机器人完成�
 - 可以指定积木的搭建方法；
 - 越高越好，越快越好。
 
+![试验](share/docs/graphics/试验.png)
+
 |子任务| 解决方案|
 |:------:|:------:|
 |手眼标定|迭代法解Perspective-n-Point问题|
